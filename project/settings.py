@@ -19,6 +19,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 OPEN_AI_KEY = config('OPEN_AI_KEY')
+GEMINI_KEY = config('GEMINI_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -141,5 +142,9 @@ LLM_PROVIDERS = {
     "openai": {
         "CLASS": "llm_api.providers.openai.OpenAIProvider",
         "api_key": OPEN_AI_KEY
+    },
+    "gemini": {
+        "CLASS": "llm_api.providers.gemini.GeminiProvider",
+        "api_key": GEMINI_KEY
     },
 }
