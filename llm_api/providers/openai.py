@@ -1,6 +1,5 @@
 from openai import OpenAI
 
-
 from .base import LLMProvider
 
 class OpenAIProvider(LLMProvider):
@@ -9,7 +8,7 @@ class OpenAIProvider(LLMProvider):
         self.client = OpenAI(api_key=api_key)
 
     def list_models(self):
-        return self.client.models.list()["data"]
+        return [model.id for model in self.client.models.list()]
 
     def chat_completion(self, messages, model, stream=False):
         return self.client.chat.completions.create(model=model,
