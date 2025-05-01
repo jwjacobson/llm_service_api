@@ -29,5 +29,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', welcome_view, name='welcome'),
     path('api/signup/', RegisterView.as_view(), name='signup'),
-    path('supported-models/', SupportedModelsView.as_view(), name='supported-models'),
+    path('api/supported-models/', SupportedModelsView.as_view(), name='supported-models'),
 ]
