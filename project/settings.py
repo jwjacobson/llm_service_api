@@ -140,6 +140,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LLM_PROVIDERS = {
     "openai": {
         "CLASS": "llm_api.providers.openai.OpenAIProvider",
-        "API_KEY": OPEN_AI_KEY
+        "api_key": OPEN_AI_KEY
     },
 }

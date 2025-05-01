@@ -7,9 +7,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import RegisterSerializer
 from rest_framework.permissions import AllowAny
 
+from .providers.loader import get_provider
+from .serializers import RegisterSerializer
 
 
 @api_view(['GET'])
@@ -26,3 +27,10 @@ class RegisterView(APIView):
             serializer.save()
             return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SupportedModelsView(APIView):
+    def get(self, request):
+        provider_name = request.query_params.get("provider", "openai")
+        provider = get_provider(provider_name)
+        models = provider.list_models()
+        return Response(models)

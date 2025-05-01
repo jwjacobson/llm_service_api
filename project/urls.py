@@ -21,7 +21,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from llm_api.views import RegisterView, welcome_view
+from llm_api.views import RegisterView, welcome_view, SupportedModelsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +29,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', welcome_view, name='welcome'),
     path('api/signup/', RegisterView.as_view(), name='signup'),
+    path('supported-models/', SupportedModelsView.as_view(), name='supported-models'),
 ]
