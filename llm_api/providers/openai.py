@@ -1,7 +1,7 @@
 import openai
-from .base import BaseLLMProvider
+from .base import LLMProvider
 
-class OpenAIProvider(BaseLLMProvider):
+class OpenAIProvider(LLMProvider):
     def __init__(self, api_key):
         openai.api_key = api_key
 
