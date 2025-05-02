@@ -22,7 +22,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 OPEN_AI_KEY = config('OPEN_AI_KEY')
 GEMINI_KEY = config('GEMINI_KEY')
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
