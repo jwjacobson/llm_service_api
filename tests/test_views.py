@@ -44,3 +44,15 @@ def test_chat_completions_view_basic(mock_get_provider, auth_client):
     assert response.status_code == 200
     assert "choices" in response.data
     assert response.data["choices"][0]["message"]["content"] == "Hello!"
+
+@pytest.mark.django_db
+def test_chat_completions_view_unauthenticated(api_client):
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [{"role": "user", "content": "Hi"}],
+        "stream": False
+    }
+    response = api_client.post('/api/chat/completions/', payload, format='json')
+    assert response.status_code == 401
+    assert "detail" in response.data
+    assert response.data["detail"] == "Authentication credentials were not provided."
