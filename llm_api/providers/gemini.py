@@ -12,12 +12,14 @@ class GeminiProvider(LLMProvider):
 
     def chat_completion(self, messages, model, stream=False):
         prompt = "\n".join([f"{m['role']}: {m['content']}" for m in messages])
-
         generative_model = genai.GenerativeModel(model_name=model)
 
         if stream:
-            response = generative_model.generate_content(prompt, stream=True)
-            return response
+            def stream_generator():
+                for chunk in generative_model.generate_content(prompt, stream=True):
+                    if chunk.text:
+                        yield {"content": chunk.text}
+            return stream_generator()
         else:
             response = generative_model.generate_content(prompt)
             return {"content": response.text}
