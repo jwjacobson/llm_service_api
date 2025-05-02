@@ -18,25 +18,17 @@ To start the server, run `uv run python manage.py runserver`
 
 ## Using the endpoints
 ### In a web browser
-The easiest way to try out the endpoints is by using the Django REST Framework's browsable API: just open http://127.0.0.1:8000 (or your local host if the address is different) in a web browser.
+The easiest way to try out the endpoints is by using the Django REST Framework's browsable API: just open http://127.0.0.1:8000 (or your local host if the address is different) in a web browser. Enter json into the provided text box to send it to the ednpoint.
 
 ### Using curl
-If you prefer, you can use curl or another utility send requests directly from the command line. Here is a sample curl POST request using Google Gemini:
+If you prefer, you can use curl or another utility to send requests directly from the command line. Here is a sample curl POST request using Google Gemini:
 ```
-curl -X POST http://localhost:8000/api/chat/completions/\?provider\=openai \
-     -H "Content-Type: application/json" \
-     -d '{
-           "model": "gpt-3.5-turbo",
-           "messages": [
-             {"role": "user", "content": "What'\''s the capital of France?"}
-           ],
-           "stream": false
-         }'
-```
+
 
 ## API endpoints
 ### Welcome: `GET /`
 Returns a welcome message. If you cannot access this, the server is probably not running.
+*Curl*
 `curl http://127.0.0.1/`
 
 ### Signup: `POST /api/signup/`
