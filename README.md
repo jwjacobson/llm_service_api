@@ -143,6 +143,9 @@ curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
       }'
 ```
 
+**Tip:** if you just want to play with LLM endpoints without dealing with authentication, you can comment out the lines in the relevant function of views.py: ```authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]``` But be careful!
+
 ## Adding LLM providers
 The API is highly configurable, and adding other providers (or removing them) is straightforward:
 1. Create a relevant API key entry in .env and update env-template
