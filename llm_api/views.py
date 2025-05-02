@@ -1,4 +1,5 @@
 # Django imports
+from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Rest Framework imports
@@ -38,3 +39,33 @@ class SupportedModelsView(APIView):
         provider = get_provider(provider_name)
         models = provider.list_models()
         return Response(models)
+
+class ChatCompletionsView(APIView):
+    def post(self, request):
+        provider_name = request.query_params.get("provider", "openai")
+        provider = get_provider(provider_name)
+
+        model = request.data.get("model")
+        messages = request.data.get("messages")
+        stream = request.data.get("stream", False)
+
+        if not model or not messages:
+            return Response(
+                {"error": "Both 'model' and 'messages' are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            result = provider.chat_completion(
+                model=model,
+                messages=messages,
+                stream=stream
+            )
+
+            if not stream:
+                return Response(result)
+
+            return Response({"error": "Streaming is not yet supported."}, status=501)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
