@@ -1,3 +1,6 @@
+# Python imports
+import json
+
 # Django imports
 from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
@@ -41,6 +44,9 @@ class SupportedModelsView(APIView):
         return Response(models)
 
 class ChatCompletionsView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         provider_name = request.query_params.get("provider", "openai")
         provider = get_provider(provider_name)
@@ -65,7 +71,18 @@ class ChatCompletionsView(APIView):
             if not stream:
                 return Response(result)
 
-            return Response({"error": "Streaming is not yet supported."}, status=501)
+            def event_stream():
+                for chunk in result:
+                    if isinstance(chunk, dict):
+                        data = json.dumps(chunk)
+                        yield f"data: {data}\n\n"
+                    else:
+                        yield f"data: {json.dumps({'content': str(chunk)})}\n\n"
+
+            return StreamingHttpResponse(
+                event_stream(),
+                content_type='text/event-stream'
+            )
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
