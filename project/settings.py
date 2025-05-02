@@ -21,6 +21,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 OPEN_AI_KEY = config('OPEN_AI_KEY')
 GEMINI_KEY = config('GEMINI_KEY')
+INHOUSE_KEY = config('INHOUSE_KEY')
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
@@ -141,4 +142,8 @@ LLM_PROVIDERS = {
         "CLASS": "llm_api.providers.gemini.GeminiProvider",
         "api_key": GEMINI_KEY
     },
+    "inhouse": {
+        "CLASS": "llm_api.providers.inhouse.InhouseProvider",
+        "api_key": INHOUSE_KEY
+    }
 }
