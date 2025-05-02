@@ -22,7 +22,6 @@ The easiest way to try out the endpoints is by using the Django REST Framework's
 
 ### Using curl
 If you prefer, you can use curl or another utility to send requests directly from the command line. Here is a sample curl POST request using Google Gemini:
-```
 
 
 ## API endpoints
