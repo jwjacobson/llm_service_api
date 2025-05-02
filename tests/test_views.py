@@ -18,6 +18,14 @@ def test_supported_models_view(mock_get_provider, auth_client):
     assert response.data == ["model-a", "model-b"]
 
 @pytest.mark.django_db
+def test_supported_models_view_unauthenticated(api_client):
+    response = api_client.get('/api/supported-models/?provider=openai')
+    assert response.status_code == 401
+    assert "detail" in response.data
+    assert response.data["detail"] == "Authentication credentials were not provided."
+
+
+@pytest.mark.django_db
 @patch('llm_api.views.get_provider')
 def test_chat_completions_view_basic(mock_get_provider, auth_client):
     mock_provider = MagicMock()
