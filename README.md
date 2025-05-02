@@ -143,7 +143,7 @@ curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
       }'
 ```
 
-**Tip:** if you just want to play with the LLM endpoints without dealing with authentication, you can comment out the lines in the relevant function of views.py:
+**Tip:** if you just want to play with the LLM endpoints without dealing with authentication, you can comment out the following lines in the relevant function of views.py:
  ```python
  authentication_classes = [JWTAuthentication]
  permission_classes = [IsAuthenticated]
