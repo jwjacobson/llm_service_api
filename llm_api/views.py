@@ -1,3 +1,6 @@
+# Python imports
+import json
+
 # Django imports
 from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
@@ -68,7 +71,22 @@ class ChatCompletionsView(APIView):
             if not stream:
                 return Response(result)
 
-            return Response({"error": "Streaming is not yet supported."}, status=501)
+            def stream_response():
+                for chunk in result:
+                    if hasattr(chunk, "text"):
+                        data = chunk.text
+                    elif hasattr(chunk, "choices") and chunk.choices:
+                        data = chunk.choices[0].delta.get("content", "")
+                    else:
+                        data = str(chunk)
+
+                    yield f"data: {json.dumps({'content': data})}\n\n"
+
+            return StreamingHttpResponse(
+                stream_response(),
+                content_type="text/event-stream"
+            )
+
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
