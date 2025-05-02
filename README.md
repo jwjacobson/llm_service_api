@@ -17,51 +17,128 @@ Note: these instructions will assume you are using uv for project and dependency
 To start the server, run `uv run python manage.py runserver`
 
 ## Using the endpoints
+
 ### In a web browser
-The easiest way to try out the endpoints is by using the Django REST Framework's browsable API: just open http://127.0.0.1:8000 (or your local host if the address is different) in a web browser. Enter json into the provided text box to send it to the ednpoint.
+
+The easiest way to try out the endpoints is by using Django REST Framework's browsable API. Just open [http://127.0.0.1:8000](http://127.0.0.1:8000) (or your local host if the address is different) in a web browser. Enter JSON into the provided text box to send it to the endpoint.
 
 ### Using curl
-If you prefer, you can use curl or another utility to send requests directly from the command line. Here is a sample curl POST request using Google Gemini:
 
+If you prefer, you can use `curl` or another utility to send requests directly from the command line. Below are examples of both the request JSON (if applicable) and the corresponding `curl` command.
+
+---
 
 ## API endpoints
-### Welcome: `GET /`
+
+### Welcome — `GET /`
+
 Returns a welcome message. If you cannot access this, the server is probably not running.
-*Curl*
-`curl http://127.0.0.1/`
 
-### Signup: `POST /api/signup/`
-Create a user.
-`curl -X POST http://localhost:8000/api/signup/ \
+```bash
+curl http://127.0.0.1/
+```
+
+---
+
+### Signup — `POST /api/signup/`
+
+Creates a user.
+
+**JSON:**
+```json
+{
+  "username": "testuser",
+  "password": "testpass"
+}
+```
+
+**curl:**
+```bash
+curl -X POST http://localhost:8000/api/signup/ \
   -H "Content-Type: application/json" \
-  -d '{"username": "testuser", "password": "testpass"}'`
+  -d '{"username": "testuser", "password": "testpass"}'
+```
 
-### Token: `POST /api/token/`
-Get an access token to use for protected endpoints and a refresh token to refresh the access token. Username and password must belong to a user you created via the signup endpoint.
-`curl -X POST http://localhost:8000/api/token/ \
+---
+
+### Token — `POST /api/token/`
+
+Get an access token and a refresh token.
+
+**JSON:**
+```json
+{
+  "username": "$USERNAME",
+  "password": "$PASSWORD"
+}
+```
+
+**curl:**
+```bash
+curl -X POST http://localhost:8000/api/token/ \
   -H "Content-Type: application/json" \
-  -d '{"username": "$USERNAME", "password": "$PASSWORD"}'`
+  -d '{"username": "$USERNAME", "password": "$PASSWORD"}'
+```
 
-### Refresh: `POST /api/token/refresh`
-Refresh your access token if it has expired.
-`curl -X POST http://localhost:8000/api/token/refresh/ \
+---
+
+### Refresh — `POST /api/token/refresh/`
+
+Refresh your access token.
+
+**JSON:**
+```json
+{
+  "refresh": "$REFRESH_TOKEN"
+}
+```
+
+**curl:**
+```bash
+curl -X POST http://localhost:8000/api/token/refresh/ \
   -H "Content-Type: application/json" \
-  -d '{"refresh": "$REFRESH_TOKEN"}'`
+  -d '{"refresh": "$REFRESH_TOKEN"}'
+```
 
-### Supported models: `GET /api/supported-models/?provider=$PROVIDER`
-Returns a list of the supported models of a given provider. Supported providers are openai, gemini, and inhouse.
-`curl http://localhost:8000/api/supported-models/\?provider\=gemini \
-  -H "Authorization: Bearer $ACCESS_TOKEN"`
+---
 
-### Chat completion: `POST /api/chat/completions/?provider=$PROVIDER`
-Returns a response to a submitted query. Supported providers are openai, gemini, and inhouse.
-`curl -X POST 'http://localhost:8000/api/chat/completions/?provider=openai' \
+### Supported Models — `GET /api/supported-models/?provider=$PROVIDER`
+
+Returns a list of models supported by the specified provider (`openai`, `gemini`, or `inhouse`).
+
+**curl:**
+```bash
+curl "http://localhost:8000/api/supported-models/?provider=gemini" \
+  -H "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+---
+
+### Chat Completion — `POST /api/chat/completions/?provider=$PROVIDER`
+
+Submit a prompt and receive a response from the selected provider.
+
+**JSON:**
+```json
+{
+  "model": "gpt-3.5-turbo",
+  "messages": [
+    {"role": "user", "content": "How is the weather on Venus?"}
+  ],
+  "stream": false
+}
+```
+
+**curl:**
+```bash
+curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
   -d '{
         "model": "gpt-3.5-turbo",
         "messages": [
-          {"role": "user", "content": "How is the weather on Venus?}
+          {"role": "user", "content": "How is the weather on Venus?"}
         ],
         "stream": false
-      }'`
+      }'
+```
