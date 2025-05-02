@@ -11,8 +11,20 @@ class InhouseProvider(LLMProvider):
         return [model.id for model in self.client.models.list()]
 
     def chat_completion(self, messages, model, stream=False):
-        return self.client.chat.completions.create(
+        response = self.client.chat.completions.create(
             model=model,
             messages=messages,
             stream=stream
         )
+
+        if not stream:
+            return response
+
+        def stream_chunks():
+            for chunk in response:
+                delta = chunk.choices[0].delta
+                content = getattr(delta, "content", "")
+                if content:
+                    yield content
+
+        return stream_chunks()
