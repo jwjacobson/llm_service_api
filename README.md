@@ -142,3 +142,9 @@ curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
         "stream": false
       }'
 ```
+
+## The inhouse LLM
+You can assume that the OpenAI and Gemini servers are up and running, but the inhouse LLM may not be. Check with the team before using it!
+
+## License
+[GNU General Public License v3](https://choosealicense.com/licenses/gpl-3.0/)
