@@ -67,6 +67,13 @@ curl -X POST http://localhost:8000/api/signup/ \
   -d '{"username": "charming_user", "password": "secure_pwd"}'
 ```
 
+**Sample response:**
+```json
+{
+"message":"User created successfully"
+}
+```
+
 ---
 
 ### Token — `POST /api/token/`
@@ -86,6 +93,14 @@ Get an access token and a refresh token.
 curl -X POST http://localhost:8000/api/token/ \
   -H "Content-Type: application/json" \
   -d '{"username": "$USERNAME", "password": "$PASSWORD"}'
+```
+
+**Sample response:**
+```json
+{
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGci...",
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGci..."
+}
 ```
 
 ---
@@ -108,6 +123,13 @@ curl -X POST http://localhost:8000/api/token/refresh/ \
   -d '{"refresh": "$REFRESH_TOKEN"}'
 ```
 
+**Sample response:**
+```json
+{
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGci...",
+}
+```
+
 ---
 
 ### Supported Models — `GET /api/supported-models/?provider=$PROVIDER`
@@ -118,6 +140,13 @@ Returns a list of models supported by the specified provider (`openai`, `gemini`
 ```bash
 curl "http://localhost:8000/api/supported-models/?provider=gemini" \
   -H "Authorization: Bearer $ACCESS_TOKEN"
+```
+
+**Sample response:**
+```json
+{
+     "models": ["gemini-pro", "gemini-pro-vision" ...]
+}
 ```
 
 ---
@@ -149,6 +178,10 @@ curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
         ],
         "stream": false
       }'
+```
+**Sample response**:
+```json
+{"id":"chatcmpl-BSpaQfs3CEkCL79NzcNP8gVrIAGsg","choices":[{"finish_reason":"stop","index":0,"logprobs":null,"message":{"content":"The weather on Venus is extremely inhospitable, with temperatures reaching up to 900 degrees Fahrenheit (475 degrees Celsius). Venus also has a thick atmosphere made up mostly of carbon dioxide and clouds of sulfuric acid, creating a runaway greenhouse effect that traps heat and makes it the hottest planet in our solar system. The atmospheric pressure on Venus is about 92 times that of Earth's surface pressure, which is equivalent to being nearly a kilometer underwater on Earth. Additionally, Venus experiences hurricane-force winds that can reach speeds of up to 224 miles per hour (360 kilometers per hour) in its upper atmosphere.","refusal":null,"role":"assistant","annotations":[],"audio":null,"function_call":null,"tool_calls":null}}],"created":1746211182,"model":"gpt-3.5-turbo-0125","object":"chat.completion","service_tier":"default","system_fingerprint":null,"usage":{"completion_tokens":123,"prompt_tokens":14,"total_tokens":137,"completion_tokens_details":{"accepted_prediction_tokens":0,"audio_tokens":0,"reasoning_tokens":0,"rejected_prediction_tokens":0},"prompt_tokens_details":{"audio_tokens":0,"cached_tokens":0}}}
 ```
 
 **Tip:** if you just want to play with the LLM endpoints without dealing with authentication, you can comment out the following lines in the relevant function of views.py:
