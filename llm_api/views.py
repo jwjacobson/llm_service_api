@@ -1,15 +1,18 @@
+# Django imports
+from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
+# Rest Framework imports
 from rest_framework import status
-from .serializers import RegisterSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.views import APIView
 
+# Local imports
+from .providers.loader import get_provider
+from .serializers import RegisterSerializer
 
 
 @api_view(['GET'])
@@ -26,3 +29,43 @@ class RegisterView(APIView):
             serializer.save()
             return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SupportedModelsView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        provider_name = request.query_params.get("provider", "openai")
+        provider = get_provider(provider_name)
+        models = provider.list_models()
+        return Response(models)
+
+class ChatCompletionsView(APIView):
+    def post(self, request):
+        provider_name = request.query_params.get("provider", "openai")
+        provider = get_provider(provider_name)
+
+        model = request.data.get("model")
+        messages = request.data.get("messages")
+        stream = request.data.get("stream", False)
+
+        if not model or not messages:
+            return Response(
+                {"error": "Both 'model' and 'messages' are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            result = provider.chat_completion(
+                model=model,
+                messages=messages,
+                stream=stream
+            )
+
+            if not stream:
+                return Response(result)
+
+            return Response({"error": "Streaming is not yet supported."}, status=501)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

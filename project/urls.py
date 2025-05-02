@@ -21,12 +21,17 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from llm_api.views import RegisterView, welcome_view
-
+from llm_api.views import (RegisterView,
+welcome_view,
+SupportedModelsView,
+ChatCompletionsView
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', welcome_view, name='welcome'),
     path('api/signup/', RegisterView.as_view(), name='signup'),
+    path('api/supported-models/', SupportedModelsView.as_view(), name='supported-models'),
+    path('api/chat/completions/', ChatCompletionsView.as_view(), name='chat-completions'),
 ]
