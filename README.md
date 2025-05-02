@@ -3,10 +3,10 @@ The LLM Service API is built using Django and Django REST Framework and provides
 
 ## Requirements
 - [Python 3.13](https://www.python.org/downloads/)
-- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) --
 Note: these instructions assume you are using uv for project and dependency management. If you use another tool, the commands you run will be slightly different (no 'uv') and you'll have to do extra work to create a virtual environment, install dependencies, etc..
-- [OpenAI API key](https://platform.openai.com/api-keys) (to interact with OpenAI LLMs)
-- [Gemini API key](https://ai.google.dev/gemini-api/docs/api-key) (to interact with Gemini LLMs)
+- An [OpenAI API key](https://platform.openai.com/api-keys) (to interact with OpenAI LLMs)
+- A [Gemini API key](https://ai.google.dev/gemini-api/docs/api-key) (to interact with Gemini LLMs)
 
 ## Installation
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
@@ -20,25 +20,25 @@ To start the server, run `uv run python manage.py runserver`
 
 ## Using the endpoints
 
-### In a web browser
+### Web interface
 
-The easiest way to try out the endpoints is by using Django REST Framework's browsable API. Just open [http://127.0.0.1:8000](http://127.0.0.1:8000) (or your local host if the address is different) in a web browser. Enter JSON into the provided text box to send it to the endpoint.
+Django REST Framework autogenerates a browsable and testable API. Just open [http://127.0.0.1:8000](http://127.0.0.1:8000) (or your local host if the address/port is different) in a web browser. Enter a JSON payload into the provided text box and press the Post button to send it to the endpoint.
 
 ### Using curl
 
-If you prefer, you can use `curl` or another utility to send requests directly from the command line. Below are examples of both the request JSON (if applicable) and the corresponding `curl` command.
+You can also use `curl` or another utility to send requests directly from the command line. Below you'll find examples of both the request JSON (if applicable) and the corresponding `curl` command.
 
 ---
 
 ## API endpoints
 
-### Welcome — `GET /`
+### Welcome — `GET /api/`
 
 Returns a welcome message. If you cannot access this, the server is probably not running.
 
 **curl:**:
 ```bash
-curl http://127.0.0.1:8000/
+curl http://127.0.0.1:8000/api/
 ```
 **Sample response:**
 ```json
@@ -78,7 +78,7 @@ curl -X POST http://localhost:8000/api/signup/ \
 
 ### Token — `POST /api/token/`
 
-Get an access token and a refresh token.
+Get an access token and a refresh token. The username and password must correspond to a user you've created with the Signup API.
 
 **JSON:**
 ```json
@@ -107,7 +107,7 @@ curl -X POST http://localhost:8000/api/token/ \
 
 ### Refresh — `POST /api/token/refresh/`
 
-Refresh your access token.
+Get a new access token. Use this if you get an error saying your token has expired.
 
 **JSON:**
 ```json
@@ -194,7 +194,7 @@ But be careful!
 
 ## Adding LLM providers
 The API is highly configurable, and adding other providers (or removing them) is straightforward:
-1. Create a relevant API key entry in .env and update env-template
+1. Create a corresponding API key entry in .env and update env-template
 2. Set the new API key value near the top of `project/settings.py` (follow the syntax of the other API key entries, e.g. `BLARG_KEY = config('BLARG_KEY')`)
 3. Add the provider to the LLM_PROVIDERS dictionary at the bottom of `project/settings.py` (again, follow the existing syntax)
 4. Create a provider module in `llm_api/providers/`. If the provider is OpenAI compatible, the module will be very similar to `llm_api/providers/openai.py`; otherwise you will have to consult the provider's documentation.
@@ -207,7 +207,7 @@ To remove a provider, just follow these instructions in reverse! Delete the prov
 You can assume that the OpenAI and Gemini servers are up and running, but the inhouse LLM may not be. Check with the team before trying to use it!
 
 ## Tests
-The app currently includes some basic unit tests covering core functionality. Running these before you push is a good way to make sure you don't break the app! Run tests with `uv run pytest`; analyze test coverage with `uv run coverage run -m pytest`; read a coverage report with `uv run coverage report`
+The app currently includes some basic unit tests covering core functionality. Running these before you push is a good way to make sure you don't break the app! Run tests with `uv run pytest`; analyze test coverage with `uv run coverage run -m pytest`; generate a coverage report with `uv run coverage report`
 
 ## License
 [GNU General Public License v3](https://choosealicense.com/licenses/gpl-3.0/)
