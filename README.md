@@ -1,10 +1,10 @@
 # LLM Service API
-The LLM Service API is built using Django and Django REST Framework and provides access to OpenAI, Google Gemini, and our in-house LLM.
+The LLM Service API is built using Django and Django REST Framework and provides access to OpenAI, Google Gemini, and our in-house LLM. It is easily configurable and extensible to allow the addition of other LLM providers.
 
 ## Requirements
 - [Python 3.13](https://www.python.org/downloads/)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
-Note: these instructions will assume you are using uv for project and dependency management. If you use another tool, you will need to modify the provided commands to work with it.
+Note: these instructions assume you are using uv for project and dependency management. If you use another tool, the commands you run will be slightly different (no 'uv') and you'll have to do extra work to create a virtual environment, install dependencies, etc..
 - [OpenAI API key](https://platform.openai.com/api-keys) (to interact with OpenAI LLMs)
 - [Gemini API key](https://ai.google.dev/gemini-api/docs/api-key) (to interact with Gemini LLMs)
 
@@ -12,6 +12,8 @@ Note: these instructions will assume you are using uv for project and dependency
 1. [Clone this repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 2. Navigate to the llm_service_api directory
 3. Copy the contents of env-template into a file named `.env` in the project's root directory, and fill in appropriate values without quotation marks. This app uses `python-decouple` to manage environment variables, and will not run unless they are set.
+4. Run `uv sync` to synchronize the project dependecies with your environment
+5. Run `uv run python manage.py migrate` to apply the initial database migrations
 
 ## Running the API
 To start the server, run `uv run python manage.py runserver`
@@ -34,10 +36,16 @@ If you prefer, you can use `curl` or another utility to send requests directly f
 
 Returns a welcome message. If you cannot access this, the server is probably not running.
 
+**curl:**:
 ```bash
-curl http://127.0.0.1/
+curl http://127.0.0.1:8000/
 ```
-
+**Sample response:**
+```json
+{
+"message":"Welcome to the LLM API!"
+}
+```
 ---
 
 ### Signup — `POST /api/signup/`
@@ -47,8 +55,8 @@ Creates a user.
 **JSON:**
 ```json
 {
-  "username": "testuser",
-  "password": "testpass"
+  "username": "charming_user",
+  "password": "secure_pwd"
 }
 ```
 
@@ -56,7 +64,7 @@ Creates a user.
 ```bash
 curl -X POST http://localhost:8000/api/signup/ \
   -H "Content-Type: application/json" \
-  -d '{"username": "testuser", "password": "testpass"}'
+  -d '{"username": "charming_user", "password": "secure_pwd"}'
 ```
 
 ---
@@ -116,7 +124,7 @@ curl "http://localhost:8000/api/supported-models/?provider=gemini" \
 
 ### Chat Completion — `POST /api/chat/completions/?provider=$PROVIDER`
 
-Submit a prompt and receive a response from the selected provider.
+Submit a prompt and receive a response from the selected provider (`openai`, `gemini`, or `inhouse`).
 
 **JSON:**
 ```json
@@ -149,7 +157,7 @@ curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
  permission_classes = [IsAuthenticated]
  ```
 
- But be careful!
+But be careful!
 
 ## Adding LLM providers
 The API is highly configurable, and adding other providers (or removing them) is straightforward:
@@ -163,7 +171,7 @@ Now you will have a new provider, the name of which will be the same as the corr
 To remove a provider, just follow these instructions in reverse! Delete the provider, any references in settings.py, and the .env entry.
 
 ## The inhouse LLM
-You can assume that the OpenAI and Gemini servers are up and running, but the inhouse LLM may not be. Check with the team before using it!
+You can assume that the OpenAI and Gemini servers are up and running, but the inhouse LLM may not be. Check with the team before trying to use it!
 
 ## License
 [GNU General Public License v3](https://choosealicense.com/licenses/gpl-3.0/)
