@@ -18,7 +18,7 @@ class InhouseProvider(LLMProvider):
         )
 
         if not stream:
-            return response
+            return response.model_dump()
 
         def stream_chunks():
             for chunk in response:
