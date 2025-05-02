@@ -71,22 +71,18 @@ class ChatCompletionsView(APIView):
             if not stream:
                 return Response(result)
 
-            def stream_response():
+            def event_stream():
                 for chunk in result:
-                    if hasattr(chunk, "text"):
-                        data = chunk.text
-                    elif hasattr(chunk, "choices") and chunk.choices:
-                        data = chunk.choices[0].delta.get("content", "")
+                    if isinstance(chunk, dict):
+                        data = json.dumps(chunk)
+                        yield f"data: {data}\n\n"
                     else:
-                        data = str(chunk)
-
-                    yield f"data: {json.dumps({'content': data})}\n\n"
+                        yield f"data: {json.dumps({'content': str(chunk)})}\n\n"
 
             return StreamingHttpResponse(
-                stream_response(),
-                content_type="text/event-stream"
+                event_stream(),
+                content_type='text/event-stream'
             )
-
 
         except Exception as e:
             return Response({"error": str(e)}, status=500)
