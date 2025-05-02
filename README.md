@@ -208,3 +208,9 @@ You can assume that the OpenAI and Gemini servers are up and running, but the in
 
 ## License
 [GNU General Public License v3](https://choosealicense.com/licenses/gpl-3.0/)
+
+## Feedback
+- For bug reports, please open an issue with a description of what you expected vs what you got
+- For suggestions, please open an issue with a description of the desired behavior
+- For gratuitous praise, please send a toot to https://fosstodon.org/@jeffjacobson
+- Thanks for reading this far!
