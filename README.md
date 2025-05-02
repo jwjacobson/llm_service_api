@@ -207,7 +207,7 @@ To remove a provider, just follow these instructions in reverse! Delete the prov
 You can assume that the OpenAI and Gemini servers are up and running, but the inhouse LLM may not be. Check with the team before trying to use it!
 
 ## Tests
-The app currently includes some basic unit tests covering core functionality. Running these before you push is a good way to make sure you don't break the app! Run tests with `uv run pytest`; analyze test coverage with `uv run coverage run -m pytest`; read a coverage report with `uv run coverage report`
+The app currently includes some basic unit tests covering core functionality. Running these before you push is a good way to make sure you don't break the app! Run tests with `uv run pytest`; analyze test coverage with `uv run coverage run -m pytest`; generate a coverage report with `uv run coverage report`
 
 ## License
 [GNU General Public License v3](https://choosealicense.com/licenses/gpl-3.0/)
