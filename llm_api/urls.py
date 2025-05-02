@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from llm_api.views import (
+from .views import (
     RegisterView,
     welcome_view,
     SupportedModelsView,
