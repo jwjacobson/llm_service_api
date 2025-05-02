@@ -143,6 +143,15 @@ curl -X POST "http://localhost:8000/api/chat/completions/?provider=openai" \
       }'
 ```
 
+## Adding LLM providers
+The API is highly configurable, and adding other providers (or removing them) is straightforward:
+1. Create a relevant API key entry in .env and update env-template
+2. Set the new API key value near the top of `project/settings.py` (follow the syntax of the other API key entries, e.g. `BLARG_KEY = config('BLARG_KEY')`)
+3. Add the provider to the LLM_PROVIDERS dictionary at the bottom of `project/settings.py`
+4. Create a provider module in `llm_api/providers/`. If the provider is OpenAI compatible, the module will be very similar to `llm_api/providers/openai.py`; otherwise you will have to consult the provider's documentation.
+
+To remove a provider, just follow these instructions in reverse! Delete the provider, any references in settings.py, and the .env entry.
+
 ## The inhouse LLM
 You can assume that the OpenAI and Gemini servers are up and running, but the inhouse LLM may not be. Check with the team before using it!
 
