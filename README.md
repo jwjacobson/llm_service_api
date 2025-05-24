@@ -1,9 +1,9 @@
 ## Note:
 This is a takehome assignment I completed for a job I didn't end up getting. I built it over 4 days and don't plan on revising it further, but regard it as a good sample of my work within such constraints. For that reason I've decided to make it public, without sharing the original prompt.
 
-The LLM Service API is built using Django and Django REST Framework and allows users to make queries to OpenAI, Google Gemini, and our in-house LLM. It is easily configurable and extensible to allow the addition of other LLM providers.
-
 # LLM Service API
+The LLM Service API is built using Django and Django REST Framework and allows users to make queries to OpenAI, Google Gemini, and our in-house LLM. It is easily configurable and extensible to allow the addition of other LLM providers
+
 ## Requirements
 - [Python 3.13](https://www.python.org/downloads/)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) --
