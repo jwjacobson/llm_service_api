@@ -2,12 +2,12 @@
 This is a takehome assignment I completed for a job I didn't end up getting. I built it over 4 days and don't plan on revising it further, but regard it as a good sample of my work within such constraints. For that reason I've decided to make it public, without sharing the original prompt.
 
 # LLM Service API
-The LLM Service API is built using Django and Django REST Framework and allows users to make queries to OpenAI, Google Gemini, and our in-house LLM. It is easily configurable and extensible to allow the addition of other LLM providers
+The LLM Service API is built using Django and Django REST Framework and allows users to make queries to OpenAI, Google Gemini, and our in-house LLM. It is easily configurable and extensible to allow the addition of other LLM providers.
 
 ## Requirements
 - [Python 3.13](https://www.python.org/downloads/)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) --
-Note: these instructions assume you are using uv for project and dependency management. If you use another tool, the commands you run will be slightly different (no 'uv') and you'll have to do extra work to create a virtual environment, install dependencies, etc..
+Note: these instructions assume you are using uv for project and dependency management. If you use another tool, the commands you run will be slightly different (no 'uv') and you'll have to do extra work with [pip](https://packaging.python.org/en/latest/tutorials/installing-packages/) to create a virtual environment, install dependencies, etc.
 - An [OpenAI API key](https://platform.openai.com/api-keys) (to interact with OpenAI LLMs)
 - A [Gemini API key](https://ai.google.dev/gemini-api/docs/api-key) (to interact with Gemini LLMs)
 
@@ -37,7 +37,7 @@ You can also use `curl` or another utility to send requests directly from the co
 
 ### Welcome — `GET /api/`
 
-Returns a welcome message. If you cannot access this, the server is probably not running.
+Returns a welcome message. If you cannot access this, either the server is not running or you entered the wrong address.
 
 **curl:**:
 ```bash
@@ -81,7 +81,7 @@ curl -X POST http://localhost:8000/api/signup/ \
 
 ### Token — `POST /api/token/`
 
-Get an access token and a refresh token. The username and password must correspond to a user you've created with the Signup API.
+Gets an access token and a refresh token. The username and password must correspond to a user you've created with the Signup endpoint.
 
 **JSON:**
 ```json
@@ -110,7 +110,7 @@ curl -X POST http://localhost:8000/api/token/ \
 
 ### Refresh — `POST /api/token/refresh/`
 
-Get a new access token. Use this if you get an error saying your token has expired.
+Gets a new access token. Use this if you get an error saying your token has expired.
 
 **JSON:**
 ```json
@@ -156,7 +156,7 @@ curl "http://localhost:8000/api/supported-models/?provider=gemini" \
 
 ### Chat Completion — `POST /api/chat/completions/?provider=$PROVIDER`
 
-Submit a prompt and receive a response from the selected provider (`openai`, `gemini`, or `inhouse`).
+Submits a prompt and receive a response from the selected provider (`openai`, `gemini`, or `inhouse`).
 
 **JSON:**
 ```json
